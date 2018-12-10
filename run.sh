@@ -1,7 +1,6 @@
 #!/bin/bash
 
 FILENAME=$(basename -- "$1")
-#echo ${FILENAME}
 FILE=$(find . -name "${FILENAME}.*")
 EXT="${FILE##*.}"
 
