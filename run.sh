@@ -1,23 +1,32 @@
 #!/bin/bash
 
 FILENAME=$(basename -- "$1")
-FILE=$(find . -name "${FILENAME}.*")
-EXT="${FILE##*.}"
+FILES=$(find . -name "${FILENAME}.*")
+arr=($FILES)
+FILE=${arr[0]}
+EXT="${arr[0]##*.}"
 
 case "$EXT" in
-        c)  gcc ${FILE} -o ${FILENAME}
+        c)  echo "C File."
+            gcc ${FILE} -o ${FILENAME}
             ./${FILENAME}.out
            ;;
-        py) python3 ${FILE}
+        py) echo "Python File."
+            python3 ${FILE}
+            [ -e "{$FILENAME}.pyc" ] && rm "{$FILENAME}.pyc"
            ;;
-        sh) sh ${FILE}
+        sh) echo "Bash File."
+            sh ${FILE}
             ;;
-        cpp) g++ ${FILE} -o ${FILENAME}
-            ./${FILENAME}.out
-             ;;
-        java) javac ${FILE}
+        cpp) echo "C++ File." 
+             g++ ${FILE} -o ${FILENAME}
+             ./${FILENAME}.out
+            ;;
+        java) echo "Java File." 
+              javac ${FILE}
               java ${FILENAME}
-             ;;
+              [ -e "{$FILENAME}.class" ] && rm "{$FILENAME}.class"
+            ;;
         txt) echo "$filename : Text file"
              ;;
         *) echo " $filename : Not processed"
